@@ -4,14 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="manifest.json">
-    <title>Mon App PWA</title>
+    <title>Mon Compteur Persistant</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #eef2f7;
+        }
+        #resultat {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            flex-direction: column; /* Empilé sur mobile pour plus de confort */
+        }
+        button {
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        #btnPlus {
+            background-color: #28a745;
+            color: white;
+        }
+        #btnReset {
+            background-color: #dc3545;
+            color: white;
+            font-size: 1rem;
+            padding: 10px 20px;
+        }
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+    </style>
 </head>
 <body>
-    <h1>Bienvenue sur ma PWA !</h1>
-    <p>Cette application fonctionne hors-ligne.</p>
+
+    <div id="resultat">0</div>
+    
+    <div class="btn-container">
+        <button id="btnPlus">Ajouter +1</button>
+        <button id="btnReset">Réinitialiser</button>
+    </div>
 
     <script>
-        // Enregistrement du Service Worker
+        // 1. Récupérer le score sauvegardé ou démarrer à 0
+        let compteur = localStorage.getItem('monScore') ? parseInt(localStorage.getItem('monScore')) : 0;
+        
+        const affichage = document.getElementById('resultat');
+        const btnPlus = document.getElementById('btnPlus');
+        const btnReset = document.getElementById('btnReset');
+
+        // Afficher le score au chargement
+        affichage.innerText = compteur;
+
+        // Fonction pour sauvegarder et afficher
+        const mettreAJour = (valeur) => {
+            compteur = valeur;
+            affichage.innerText = compteur;
+            localStorage.setItem('monScore', compteur); // SAUVEGARDE ICI
+        };
+
+        // Bouton +1
+        btnPlus.addEventListener('click', () => {
+            mettreAJour(compteur + 1);
+        });
+
+        // Bouton Reset
+        btnReset.addEventListener('click', () => {
+            if(confirm("Voulez-vous vraiment remettre le compteur à zéro ?")) {
+                mettreAJour(0);
+            }
+        });
+
+        // Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js');
         }
