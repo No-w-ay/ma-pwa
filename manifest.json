@@ -1,7 +1,8 @@
 {
   "name": "Ma Super PWA",
   "short_name": "MaPWA",
-  "start_url": "/index.html",
+  "start_url": "/ma-pwa/",
+  "scope" : "/ma-pwa/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
