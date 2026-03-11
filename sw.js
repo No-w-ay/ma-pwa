@@ -1,5 +1,5 @@
-const cacheName = 'pwa-v1';
-const assets = ['/', '/index.html', '/style.css'];
+const cacheName = 'pwa-v2';
+const assets = ['./', './index.html', './manifest.json', './icon-192.png'];
 
 // Installation du Service Worker
 self.addEventListener('install', e => {
